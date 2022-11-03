@@ -21,23 +21,24 @@ Function efficiency: The estimated runtime for our algorithm is O(n).
 
 ## Timeline
 ### Week 1 (Oct 30th - Nov 5th )
-Write ream contract, project proposal
-Set up github repository
+1. Write ream contract, project proposal
+2. Set up github repository
 Write development log1
 ### Week 2 (Nov 6th - Nov 12th)
-Download data set
-Store data set
-Write test cases
+1. Download data set
+2. Store data set
+3. Write test cases
 ### Week 3 (Nov 13th - Nov 19th)
-Mid-Project Checkin (Nov 14-18)
-Implement finding shortest path
-Write test cases
+1. Mid-Project Checkin (Nov 14-18)
+2. Implement finding shortest path
+3. Write test cases
 ### Week 4 (Nov 20th - Nov 26th)
-Finish finding shortest path 
+1. Finish finding shortest path 
+2. Write test cases
 ### Week 5 (Nov 27th - Dec 3rd)
-Write test cases 
-Finish any remaining parts
+1. Finish any remaining parts
+2. Write test cases 
 ### Week 6 (Dec 4th - Dec 10th )
-Clean up code
-Give presentation
+1. Clean up code
+2. Give presentation
 
