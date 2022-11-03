@@ -22,7 +22,7 @@ We expected each member to commit 10 hours every week. There are no prior time c
 We will use majority rule and vote for the better option. If he/she doesn’t accomplish the task or continues to be late for meetings, we will talk with him/her first and if such circumstances happen more than three times, we will report the situation to our mentor or TAs who are in charge. We can’t think of any other situations that we need to address ahead of time. We will all try our best to accomplish our task and try to hold each other accountable.
 
 ## Signatures
-Jian Song
-Bingheng Li
-Jiyang Xu
+Jian Song <br/>
+Bingheng Li <br/>
+Jiyang Xu <br/>
 Xin Li
