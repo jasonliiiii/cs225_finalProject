@@ -14,8 +14,10 @@ We plan to create an Airport Class that contains various privates variables to s
 
 ## Algorithm 
 Function input: The expected input will likely be the two Airports classes in our created graph. As mentioned before, we will have to transfer our data points stored in the vector into a graph that are weighted by distance between different airports. In order to find the shortest distance, we might also need to implement graph traversal algorithms utilizing data structures such as stack or queue. 
-	Function Outputs: The output for my algorithm is the route for the shortest path between two locations (city). Our algorithm will return a list containing the nodes (airports) in the graph that has the shortest distance. 
-	Function efficiency: The estimated runtime for our algorithm is O(n). 
+	
+Function Outputs: The output for my algorithm is the route for the shortest path between two locations (city). Our algorithm will return a list containing the nodes (airports) in the graph that has the shortest distance. 
+
+Function efficiency: The estimated runtime for our algorithm is O(n). 
 
 ## Timeline
 ### Week 1 (Oct 30th - Nov 5th )
