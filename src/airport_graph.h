@@ -25,12 +25,16 @@ class Graph {
     // functions to insert vertices (airports)
     void insertVertex(int v, Airport airport);
 
+    // read airports.dat and get a vector of airports
+    vector<Airport> readFileAP(string airportFile);
+
     // helper function to insert edges (routes)
     vector<string> readLineRoute(string & line);
 
     // helper function to convert above line to Route object
     Route createRoute(vector<string> route);
 
+    // read routes.dat and get a vector of routes
     vector<Route> readFileRoute(string routeFile);
 
     private:

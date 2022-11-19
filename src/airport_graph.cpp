@@ -11,9 +11,25 @@ using namespace std;
 
 Graph::Graph(){}
 
-// read dataset aiports.dat and route.dat
 Graph::Graph(string & airportFile, string routeFile) {
 
+}
+
+vector<Airport> readFileAP(string airportFile) {
+    vector<Airport> all_aps;
+    fstream file;
+    file.open(airportFile, ios::in);
+    if (file.is_open()) {
+        string line;
+
+        while (getline(file, line)) {
+            if (Airport(&line) != nullptr) {
+                all_aps.push_back(Airport(&line));
+            }
+        }
+        file.close();
+    }
+    return all_aps;
 }
 
 void Graph::insertVertex(int v, Airport airport);
@@ -60,18 +76,19 @@ vector<Route> Graph::readFileRoute(string routeFile) {
     vector<Route> all_routes;
     fstream file;
     file.open(routeFile, ios::in);
-    if (file.open()) {
+    if (file.is_open()) {
         string line;
 
-    while (getline(file, line)) {
-        vector<string> route = readLineRoute(line);
-        // check if is the skipped route
-        if (route != nullptr) {
-            Route r = createRoute(route);
-            all_routes.push_back(r);
+        while (getline(file, line)) {
+            vector<string> route = readLineRoute(line);
+            // check if is the skipped route
+            if (route != nullptr) {
+                Route r = createRoute(route);
+                all_routes.push_back(r);
+            }
         }
+        file.close();
     }
-    file.close();
     return all_routes;
 }
 
