@@ -2,26 +2,28 @@
 
 class Route {
     public:
-    // Constructors
-    Route();
-    Route(string source_airport, int source_airport_id, string destination_airport, int destination_airport_id);
+        //default constructor
+        Route();
+        //constructor without given weight
+        Route(int s, int d);
+        //constructor with everything
+        Route(int s, int d, double w);
 
-    // getter
-    int getSourceID();
-    int getDestID();
-    string getSourceName();
-    string getDestName();
-
-    // helper function to read data
-    string& getline(string & routeFile);
-
-    // read file from route.dat
-    // returns a map with content: key: id of an airport, value: a set of ids of airports has routes
-    map<int, set<int>> readRoutes(string &line);
-
+        //getters
+        int getSourceId();       
+        int getDestId();         
+        double getWeight();
+       
+        //setters
+        void setWeight(double w);
+        void setSource(double s);
+        void setDestination(double d); 
+    
     private:
-    string source_airport_;
-    int source_airport_id_;
-    string destination_airport_;
-    int destination_airport_id_;
+        //source airport ID
+        int sourceAP;
+        //destination airport ID
+        int destinationAP;
+        //distances in KM between two airports
+        double weight;
 };

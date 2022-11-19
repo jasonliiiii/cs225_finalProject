@@ -33,17 +33,8 @@ class Airport {
     // helper function to calculate distance
     double radianConvert(double degress);
 
-    // function to calculate distance between two airports
-    double calculate_distance(Airport from, Airport dest);
-
-    // function to get a map that records the adjacent airport with routes and the distance between them
-    // key: ids of related airports, value: distance
-    map<int, int> airports_distances(Airport center);
-
-    // a set ids of airports that has routes with this airport
-    // can be obtained from Route.h
-    set<int> related_aiports(Airport center);
-
+    // function to calculate distance between two ids of airports
+    double calculate_distance(int from, int dest);
 
     private:
     int id_;
