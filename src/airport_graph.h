@@ -22,6 +22,15 @@ class Graph {
     // in order to obtain a list of airports and routes
     Graph(string & airportFile, string routeFile);
 
+    /************************************************
+    Suggestion: Maybe we could create two vectors, one containing all the airports and one containing all the routes
+    ************************************************/
+    // populate the 'vertices' map
+    void setVerticesMap(vector<Airport> airports);
+
+    // populate the 'related airports' map
+    void setRelationMap(vector<Route> routes);
+
     // functions to insert vertices (airports)
     void insertVertex(int v, Airport airport);
 
@@ -38,10 +47,12 @@ class Graph {
     vector<Route> readFileRoute(string routeFile);
 
     private:
+
+
     // map each id with its airport object
     map<int, Airport> vertices;
 
     // a map that records the adjacent airport with routes and the distance between them
     // key: main airport, value: pairs(key: related airport, value: distance)
-    map<int, set<pair<int,int>>> related_aiports;
+    map<int, set<pair<int,double>>> related_airports;
 };

@@ -67,3 +67,13 @@ Airport::Airport(int id, string name, string city, string country, double latitu
     latitude_ = latitude;
     longitude_ = longitude;
 }
+
+// helper function to calculate distance
+double radianConvert(double degress) {
+    return 0;
+}
+
+// function to calculate distance between two ids of airports
+double calculate_distance(int from, int dest) {
+    return 1;
+}

@@ -12,10 +12,11 @@ using namespace std;
 Graph::Graph(){}
 
 Graph::Graph(string & airportFile, string routeFile) {
-
+    // DO SOMETHING
+    // Create the graph
 }
 
-vector<Airport> readFileAP(string airportFile) {
+vector<Airport> Graph::readFileAP(string airportFile) {
     vector<Airport> all_aps;
     fstream file;
     file.open(airportFile, ios::in);
@@ -32,7 +33,9 @@ vector<Airport> readFileAP(string airportFile) {
     return all_aps;
 }
 
-void Graph::insertVertex(int v, Airport airport);
+void Graph::insertVertex(int v, Airport airport) {
+    //DO SOMETHING
+}
 
 // helper functions to create and insert one edge (route)
 // example line: BA,1355,SIN,3316,LHR,507,,0,744 777
@@ -61,7 +64,7 @@ vector<string> Graph::readLineRoute(string & line) {
     return routes;
 }
 
-Route Graph::createRoute(vector<string> route);
+Route Graph::createRoute(vector<string> route) {
     if (route != nullptr) {
         int source_id = stoi(route[3], nullptr);
         int dest_id = stoi(route[5], nullptr);
@@ -92,3 +95,28 @@ vector<Route> Graph::readFileRoute(string routeFile) {
     return all_routes;
 }
 
+void Graph::setRelationMap(vector<Route> routes) {
+    for (Route route : routes) {
+        if (related_airports.count(route.sourceAP) > 0) {
+            // the airport already exsits in the map
+            related_airports[route.getSourceId()].insert(pair<int, double>(route.getDestId(), route.getWeight()));
+        } else {
+            // when the map does not contain the desired airport, we add a new pair to the map
+            set<pair<int, double>> to_insert;
+            to_insert.insert(pair<int, double>(route.getDestId(), route.getWeight()));
+            related_airports.insert(pair<int, set<pair<int,double>>(route.getSourceId(), to_insert));
+        }
+    }
+}
+
+void Graph::setVerticesMap(vector<Airport> airports) {
+    for (Airport airport : airports) {
+        if (vertices.count(airport.getAirportID()) > 0) {
+            // the airport already exsits in the map
+            // in this case we do nothing
+            continue;
+        } else {
+            vertices.insert(pair<int, Airport>(airport.getAirportID(), airports));
+        }
+    }
+}
