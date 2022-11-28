@@ -10,6 +10,7 @@
 #include <iostream>
 #include <vector>
 #include <sstream>
+#include <math.h>
 
 #include "route.h"
 
@@ -33,8 +34,8 @@ class Airport {
     // helper function to calculate distance
     double radianConvert(double degress);
 
-    // function to calculate distance between two ids of airports
-    double calculate_distance(int from, int dest);
+    // function to calculate distance between two airports
+    double calculate_distance(Airport from, Airport dest);
 
     private:
     int id_;
