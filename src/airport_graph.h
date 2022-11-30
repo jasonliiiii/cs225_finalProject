@@ -20,7 +20,7 @@ class Graph {
     public:
     Graph();
     // in order to obtain a list of airports and routes
-    Graph(string & airportFile, string routeFile);
+    Graph(string & airportFile, string & routeFile);
 
     /************************************************
     Suggestion: Maybe we could create two vectors, one containing all the airports and one containing all the routes
@@ -54,6 +54,11 @@ class Graph {
 
     // // functions to insert all edges (routes) by using two private maps
     // void insertAllEdges();
+
+    // helper function for BFS
+    vector<int> adjacent(int sourceAP);
+    // helper getter
+    string getAirportNameByID(int id);
 
     private:
 

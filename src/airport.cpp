@@ -69,13 +69,13 @@ Airport::Airport(int id, string name, string city, string country, double latitu
 }
 
 // helper function to calculate distance
-double radianConvert(double degress) {
+double Airport::radianConvert(double degress) {
     double pi = 22/7;
     return degress * (pi / 180);
 }
 
 // function to calculate distance between two ids of airports
-static double calculate_distance(Airport from, Airport dest) {
+double Airport::calculate_distance(Airport from, Airport dest) {
     double la1 = from.getAirportLatitude();
     double la2 = dest.getAirportLatitude();
     double lo1 = from.getAirportLongitude();

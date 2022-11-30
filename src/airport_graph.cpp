@@ -11,7 +11,7 @@ using namespace std;
 
 Graph::Graph(){}
 
-Graph::Graph(string & airportFile, string routeFile) {
+Graph::Graph(string & airportFile, string & routeFile) {
     // DO SOMETHING
     // Create the graph
     setVerticesMap(readFileAP(airportFile));
@@ -41,18 +41,18 @@ vector<Airport> Graph::readFileAP(string airportFile) {
 // helper functions to create and insert one edge (route)
 // example line: BA,1355,SIN,3316,LHR,507,,0,744 777
 vector<string> Graph::readLineRoute(string & line) {
-    string s = "";
     vector<string> routes;
+    string s = "";
     int comma = 0;
     for (size_t i = 0; i < line.size(); ++i) {
         char c = line[i];
-        // next line 
-        if (c == '\\') {
-            return routes;
-        }
         // one element ended
         if (c == ',') {
+            if (s == "\\N") {
+                return vector<string>();
+            }
             routes.push_back(s);
+            s = "";
             comma++;
         } else {
             s += c;
@@ -70,7 +70,8 @@ Route Graph::createRoute(vector<string> route) {
         int source_id = stoi(route[3], nullptr);
         int dest_id = stoi(route[5], nullptr);
         // missing part: check source airport and destination aiport are included in the vertex vector or not
-        double weight = Airport::calculate_distance(vertices[source_id], vertices[dest_id]);
+        Airport a;
+        double weight = a.calculate_distance(vertices.at(source_id), vertices.at(dest_id));
         Route r(source_id, dest_id, weight);
         return r;
     } 
@@ -121,4 +122,17 @@ void Graph::setVerticesMap(vector<Airport> airports) {
             vertices.insert(pair<int, Airport>(airport.getAirportID(), airport));
         }
     }
+}
+
+vector<int> Graph::adjacent(int sourceAP) {
+    set s = related_airports.at(sourceAP);
+    vector<int> vec;
+    for (auto i : s) {
+        vec.push_back(i.first);
+    }
+    return vec;
+}
+
+string Graph::getAirportNameByID(int id) {
+    return vertices[id].getAirportName();
 }

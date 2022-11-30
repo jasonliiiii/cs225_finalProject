@@ -23,7 +23,7 @@ class Airport {
     Airport(string &line);
     Airport(int id, string name, string city, string country, double latitude, double longitude);
 
-    //getters
+    // getters
     int getAirportID() {return id_;}
     string getAirportName() {return name_;}
     string getAirportCity() {return city_;}
@@ -35,7 +35,7 @@ class Airport {
     double radianConvert(double degress);
 
     // function to calculate distance between two airports
-    static double calculate_distance(Airport from, Airport dest);
+    double calculate_distance(Airport from, Airport dest);
 
     private:
     int id_;
