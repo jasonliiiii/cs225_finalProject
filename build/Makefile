@@ -169,6 +169,19 @@ cs225/fast:
 	$(MAKE) $(MAKESILENT) -f lib/CMakeFiles/cs225.dir/build.make lib/CMakeFiles/cs225.dir/build
 .PHONY : cs225/fast
 
+#=============================================================================
+# Target rules for targets named src
+
+# Build rule for target.
+src: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src
+.PHONY : src
+
+# fast build rule for target.
+src/fast:
+	$(MAKE) $(MAKESILENT) -f src/CMakeFiles/src.dir/build.make src/CMakeFiles/src.dir/build
+.PHONY : src/fast
+
 entry/main.o: entry/main.cpp.o
 .PHONY : entry/main.o
 
@@ -228,6 +241,7 @@ help:
 	@echo "... cs225"
 	@echo "... lodepng"
 	@echo "... main"
+	@echo "... src"
 	@echo "... test"
 	@echo "... entry/main.o"
 	@echo "... entry/main.i"
