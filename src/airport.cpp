@@ -14,13 +14,13 @@ Airport::Airport(string &line) {
 
     for (size_t i = 0; i < line.size(); i++) {
         char c = line[i];
-        bool quotation;
+        bool quotation = false;
 
         // no quotation mark occurs
         if (quotation == false) {
             // if current char is ",", which means we reach the end of one piece of information
             // pushback string s and reset s;
-            if (c == ",") {
+            if (c == ',') {
                 information.push_back(s);
                 s = "";
             // if current char is the first half of quotation mark,  
@@ -75,7 +75,7 @@ double radianConvert(double degress) {
 }
 
 // function to calculate distance between two ids of airports
-double calculate_distance(Airport from, Airport dest) {
+static double calculate_distance(Airport from, Airport dest) {
     double la1 = from.getAirportLatitude();
     double la2 = dest.getAirportLatitude();
     double lo1 = from.getAirportLongitude();

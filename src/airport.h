@@ -35,7 +35,7 @@ class Airport {
     double radianConvert(double degress);
 
     // function to calculate distance between two airports
-    double calculate_distance(Airport from, Airport dest);
+    static double calculate_distance(Airport from, Airport dest);
 
     private:
     int id_;
