@@ -31,9 +31,6 @@ class Graph {
     // populate the 'related airports' map
     void setRelationMap(vector<Route> routes);
 
-    // functions to insert vertices (airports)
-    void insertVertex(int v, Airport airport);
-
     // read airports.dat and get a vector of airports
     vector<Airport> readFileAP(string airportFile);
 
@@ -46,8 +43,19 @@ class Graph {
     // read routes.dat and get a vector of routes
     vector<Route> readFileRoute(string routeFile);
 
-    private:
+    // // function to insert vertices (airports)
+    // void insertVertex(int v, Airport airport);
 
+    // // function to insert all vertices (airports) by using two private maps
+    // void insertAllVertex();
+
+    // // function to insert edges (routes)
+    // void insertEdge(Route t);
+
+    // // functions to insert all edges (routes) by using two private maps
+    // void insertAllEdges();
+
+    private:
 
     // map each id with its airport object
     map<int, Airport> vertices;

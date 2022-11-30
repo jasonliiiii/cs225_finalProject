@@ -14,6 +14,8 @@ Graph::Graph(){}
 Graph::Graph(string & airportFile, string routeFile) {
     // DO SOMETHING
     // Create the graph
+    setVerticesMap(readFileAP(airportFile));
+    setRelationMap(readFileRoute(routeFile));
 }
 
 vector<Airport> Graph::readFileAP(string airportFile) {
@@ -34,10 +36,6 @@ vector<Airport> Graph::readFileAP(string airportFile) {
         file.close();
     }
     return all_aps;
-}
-
-void Graph::insertVertex(int v, Airport airport) {
-    //DO SOMETHING
 }
 
 // helper functions to create and insert one edge (route)
