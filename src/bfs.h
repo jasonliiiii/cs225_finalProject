@@ -1,23 +1,23 @@
 #pragma once
+#include "airport.h"
 #include "airport_graph.h"
 #include <string>
 #include <queue>
-#include <stack>
-#include <map>
-#include <fstream>
+#include <unordered_map>
 #include <vector>
+#include <algorithm>
+#include <iostream>
+
 
 using namespace std;
 
-class BFS {
-    public:
-    BFS(string &airportFile, string &routeFile);
+class BFS{
+    public:
 
-    // input : Graph G, output: A labeling of the edges on G as discovery and cross edge represented by vector
-    vector<string> traverseAll(int sourceAP);
+    unordered_map<string, Node*> abbrMap();
+    Node* abbr(string abbr);
+    vector<string> shortestDist(string from, string dest);
+    private:
+    unordered_map<string, Node*> NodeMap;
+}
 
-    vector<string> traverseByDest(int sourceAP, int destAP);
-    
-    private:
-    Graph graph_;
-};
