@@ -55,10 +55,18 @@ class Graph {
     // // functions to insert all edges (routes) by using two private maps
     // void insertAllEdges();
 
+    /************************************************
+    BFS traversal
+    ************************************************/
     // helper function for BFS
     vector<int> adjacent(int sourceAP);
+    
     // helper getter
     string getAirportNameByID(int id);
+
+    vector<string> traverseAll(int sourceAP);
+
+    vector<string> traverseByDest(int sourceAP, int destAP);
 
     private:
 

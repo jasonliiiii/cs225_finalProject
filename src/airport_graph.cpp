@@ -3,6 +3,7 @@
 #include <vector>
 #include <map>
 #include <string>
+#include <queue>
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -124,6 +125,10 @@ void Graph::setVerticesMap(vector<Airport> airports) {
     }
 }
 
+/************************************************
+BFS Traversal
+************************************************/
+
 vector<int> Graph::adjacent(int sourceAP) {
     set s = related_airports.at(sourceAP);
     vector<int> vec;
@@ -135,4 +140,64 @@ vector<int> Graph::adjacent(int sourceAP) {
 
 string Graph::getAirportNameByID(int id) {
     return vertices[id].getAirportName();
+}
+
+vector<string> Graph::traverseAll(int sourceAP) {
+    vector<string> ret;
+    queue<int> q;
+    // 14110: because there is 14110 airports in airport dataset
+    vector<bool> labels(14110, false);
+
+    q.push(sourceAP);
+    // labels[sourceAP] = true; // label sourceAP (starting point) as visited
+
+    int currentAP = sourceAP; // copy of the input id
+    labels[currentAP] = true;
+
+    while (!(q.empty())) {
+        currentAP = q.front();
+        ret.push_back(getAirportNameByID(currentAP));
+
+        for (auto ap : adjacent(currentAP)) {
+            if (labels[ap] == false) { // vertex is unexplored
+                labels[ap] = true;
+                q.push(ap);
+            }
+        }
+        q.pop();
+    }
+    return ret;
+}
+
+vector<string> Graph::traverseByDest(int sourceAP, int destAP) {
+    vector<string> ret;
+    queue<int> q;
+    // 14110: because there is 14110 airports in airport dataset
+    vector<bool> labels(14110, false);
+
+    q.push(sourceAP);
+    labels[sourceAP] = true; // label sourceAP (starting point) as visited
+
+    int currentAP = sourceAP; // copy of the input id
+    labels[currentAP] = true;
+
+    while (!(q.empty())) {
+        currentAP = q.front();
+
+        if (currentAP == destAP) { // check if we reach the destination airport
+            break;
+            ret.push_back(getAirportNameByID(currentAP));
+        }
+
+        ret.push_back(getAirportNameByID(currentAP));
+
+        for (auto ap : adjacent(sourceAP)) {
+            if (labels[ap] == false) { // vertex is unexplored
+                labels[ap] = true;
+                q.push(ap);
+            }
+        }
+        q.pop();
+    }
+    return ret;
 }
