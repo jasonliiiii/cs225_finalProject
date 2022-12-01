@@ -1,9 +1,7 @@
 #include <catch2/catch_test_macros.hpp>
-#include "/workspaces/cs225/release-f22/final_project/src/airport.h"
-#include "/workspaces/cs225/release-f22/final_project/src/route.h"
-#include "/workspaces/cs225/release-f22/final_project/src/airport_graph.h"
-#include "/workspaces/cs225/release-f22/final_project/src/bfs.h"
-//#include "Catch2/catch.hpp"
+#include "airport.h"
+#include "route.h"
+#include "airport_graph.h"
 
 using namespace std;
 
@@ -95,8 +93,7 @@ TEST_CASE("BFS", "[weight=1][timeout=30000]") {
   Route r3 = Route(507, 8810, 3200);
   vector<Route> routes = {r1, r2, r3};
   g.setRelationMap(routes);
-  BFS bfs = BFS(g);
-  vector<string> path = bfs.traverseByDest(507, 3127);
+  vector<string> path = g.traverseByDest(507, 3127);
   REQUIRE(path.size() == 3);
   REQUIRE(path.at(0) == "London Heathrow Airport");
   REQUIRE(path.at(1) == "Kugaaruk Airport");
