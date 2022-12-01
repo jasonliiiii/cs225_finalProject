@@ -1,46 +1,67 @@
 #include "bfs.h"
 
-unordered_map<std::string, Graph::Node*> BFS::abbrMap() {
-    return NodeMap;
+using namespace std;
+
+BFS::BFS(string &airportFile, string &routeFile) {
+    graph_ = Graph(airportFile, routeFile);
 }
 
-BFS::Node* Graph::abbr(std::string abbr){
-    return NodeMap.at(abbr);
+vector<string> BFS::traverseAll(int sourceAP) {
+    vector<string> ret;
+    queue<int> q;
+    // 14110: because there is 14110 airports in airport dataset
+    vector<bool> labels(14110, false);
+
+    q.push(sourceAP);
+    // labels[sourceAP] = true; // label sourceAP (starting point) as visited
+
+    int currentAP = sourceAP; // copy of the input id
+    labels[currentAP] = true;
+
+    while (!(q.empty())) {
+        currentAP = q.front();
+        ret.push_back(graph_.getAirportNameByID(currentAP));
+
+        for (auto ap : graph_.adjacent(currentAP)) {
+            if (labels[ap] == false) { // vertex is unexplored
+                labels[ap] = true;
+                q.push(ap);
+            }
+        }
+        q.pop();
+    }
+    return ret;
 }
 
-vector<string> BFS:: shortestDist(string from, string dest){
-    queue<string> queue;
-    unordered_set<string> beVisited;
-    unordered_map<string, string> pre;
+vector<string> BFS::traverseByDest(int sourceAP, int destAP) {
+    vector<string> ret;
+    queue<int> q;
+    // 14110: because there is 14110 airports in airport dataset
+    vector<bool> labels(14110, false);
 
-    queue.push(from);
-    beVisited.insert(from);
+    q.push(sourceAP);
+    labels[sourceAP] = true; // label sourceAP (starting point) as visited
 
-    while(!queue.empty()){
-        string current = queue.front();
-        queue.pop();
-        if(current = dest){
-            break;
-        }
+    int currentAP = sourceAP; // copy of the input id
+    labels[currentAP] = true;
 
-        Node* AbbCurrent = abbr(current);
-        for(Edge* i : ){
-            if(beVisited.count(i -> dest -> abbr)){
-                beVisited.insert(i -> dest -> abbr)
-                queue.push(i -> dest -> abbr);
-                pre[i -> dest -> abbr] = AbbCurrent -> abbr;
-            }
-        }
-    }
+    while (!(q.empty())) {
+        currentAP = q.front();
 
-    vector<string> result;
-    string current = dest;
-    result.push_back(current);
-    while(pre.count(current)){
-        current = pre[current];
-        result.push_back(current);
-    }
-    reverse(result.begin(), result.end());
+        if (currentAP == destAP) { // check if we reach the destination airport
+            break;
+            ret.push_back(graph_.getAirportNameByID(currentAP));
+        }
 
-    return result;
+        ret.push_back(graph_.getAirportNameByID(currentAP));
+
+        for (auto ap : graph_.adjacent(sourceAP)) {
+            if (labels[ap] == false) { // vertex is unexplored
+                labels[ap] = true;
+                q.push(ap);
+            }
+        }
+        q.pop();
+    }
+    return ret;
 }
