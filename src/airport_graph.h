@@ -43,30 +43,38 @@ class Graph {
     // read routes.dat and get a vector of routes
     vector<Route> readFileRoute(string routeFile);
 
-    // // function to insert vertices (airports)
-    // void insertVertex(int v, Airport airport);
-
-    // // function to insert all vertices (airports) by using two private maps
-    // void insertAllVertex();
-
-    // // function to insert edges (routes)
-    // void insertEdge(Route t);
-
-    // // functions to insert all edges (routes) by using two private maps
-    // void insertAllEdges();
 
     /************************************************
     BFS traversal
     ************************************************/
     // helper function for BFS
     vector<int> adjacent(int sourceAP);
-    
+
     // helper getter
     string getAirportNameByID(int id);
 
     vector<string> traverseAll(int sourceAP);
 
     vector<string> traverseByDest(int sourceAP, int destAP);
+
+
+    /************************************************
+    Dijkstras: find shortest path (recommended travel paths)
+    ************************************************/
+
+    // input: source airport and destination airport
+    // output: a vector to represent the shortest path
+    vector<int> dijkstras(int source_airport_id, int destination_airport_id);
+
+    vector<int> dijkstras(string source_airport_id, string destination_airport_id);
+
+    /************************************************
+    Kosaraju: strongest connect component (recommended travel cities)
+    ************************************************/
+
+    // input: source airport
+    // output: a vector to represent the strongest connect airports in the graph
+    vector<int> kosaraju(int source_airport_id);
 
     private:
 

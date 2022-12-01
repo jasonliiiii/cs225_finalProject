@@ -201,3 +201,23 @@ vector<string> Graph::traverseByDest(int sourceAP, int destAP) {
     }
     return ret;
 }
+
+
+/************************************************
+Dijkstras: find shortest path (recommended travel paths)
+************************************************/
+
+// input: source airport and destination airport
+// output: a vector to represent the shortest path
+vector<int> Graph::dijkstras(int source_airport_id, int destination_airport_id) {}
+
+vector<int> Graph::dijkstras(string source_airport_id, string destination_airport_id) {}
+
+
+/************************************************
+Kosaraju: strongest connect component (recommended travel cities)
+************************************************/
+
+// input: source airport
+// output: a vector to represent the strongest connect airports in the graph
+vector<int> Graph::kosaraju(int source_airport_id) {}
