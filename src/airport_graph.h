@@ -3,6 +3,8 @@
 #include <vector>
 #include <string>
 #include <map>
+#include <stack>
+#include <queue>
 
 #include <string>
 #include <fstream>
@@ -76,6 +78,12 @@ class Graph {
     // output: a vector to represent the strongest connect airports in the graph
     vector<int> kosaraju(int source_airport_id);
 
+    void dfs(int v, vector<bool> visited);
+
+    void fillOrder(int i,  vector<bool> visited, stack<int> &stack);
+
+    Graph transpose();
+
     private:
 
     // map each id with its airport object
@@ -84,4 +92,6 @@ class Graph {
     // a map that records the adjacent airport with routes and the distance between them
     // key: main airport, value: pairs(key: related airport, value: distance)
     map<int, set<pair<int,double>>> related_airports;
+
+    vector<Airport> airports_;
 };

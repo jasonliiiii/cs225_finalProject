@@ -4,6 +4,8 @@
 #include <map>
 #include <string>
 #include <queue>
+#include <stack>
+#include <list>
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -17,6 +19,7 @@ Graph::Graph(string & airportFile, string & routeFile) {
     // Create the graph
     setVerticesMap(readFileAP(airportFile));
     setRelationMap(readFileRoute(routeFile));
+    airports_ = readFileAP(airportFile);
 }
 
 vector<Airport> Graph::readFileAP(string airportFile) {
@@ -209,9 +212,13 @@ Dijkstras: find shortest path (recommended travel paths)
 
 // input: source airport and destination airport
 // output: a vector to represent the shortest path
-vector<int> Graph::dijkstras(int source_airport_id, int destination_airport_id) {}
+vector<int> Graph::dijkstras(int source_airport_id, int destination_airport_id) {
+    return vector<int>(14110, 0);
+}
 
-vector<int> Graph::dijkstras(string source_airport_id, string destination_airport_id) {}
+vector<int> Graph::dijkstras(string source_airport_id, string destination_airport_id) {
+    return vector<int>(14110, 0);
+}
 
 
 /************************************************
@@ -220,4 +227,84 @@ Kosaraju: strongest connect component (recommended travel cities)
 
 // input: source airport
 // output: a vector to represent the strongest connect airports in the graph
-vector<int> Graph::kosaraju(int source_airport_id) {}
+vector<int> Graph::kosaraju(int source_airport_id) {
+    stack<int> stack;
+    // mark all the vertices as not visited (for first DFS)
+    vector<bool> visited (14110, false);
+    
+    // fill vertices in stack according to finishing times
+    for (size_t i = 0; i < airports_.size(); i++) {
+        if (visited[i] == false) {
+            fillOrder(i, visited, stack);
+        }
+    }
+
+    // create a reversed graph
+    Graph g = transpose();
+
+    // mark all the vertices as not visited (for second DFS)
+    for (size_t i = 0; i < airports_.size(); i++) {
+        visited[i] = false;
+    }
+
+    vector<int> ret;
+    // process all vertices
+    while (!stack.empty()) {
+        int v = stack.top();
+        stack.pop();
+        ret.push_back(v);
+
+        if (!visited[v]) {
+            g.dfs(v, visited);
+        }
+    }
+    return ret;
+}
+
+void Graph::dfs(int v, vector<bool> visited) {
+    visited[v] = true;
+    // for (auto it = related_airports[airports_[v].getAirportID()].begin(); it != related_airports[airports_[v].getAirportID()].end(); ++it) {
+    //     if (!visited[(*it).first]) {
+    //         dfs((*it).first, visited);
+    //     }
+    // }
+    for (auto ap : adjacent(airports_[v].getAirportID())) {
+        if (!visited[ap]) {
+            dfs(ap, visited);
+        }
+    }
+}
+
+void Graph::fillOrder(int i,  vector<bool> visited, stack<int> &stack) {
+    visited[i] = true;
+    // for (auto it = related_airports[airports_[i].getAirportID()].begin(); it != related_airports[airports_[i].getAirportID()].end(); ++it) {
+    //     if (!visited[(*it).first]) {
+    //         fillOrder((*it).first, visited, stack);
+    //     }
+    // }
+    for (auto ap : adjacent(airports_[i].getAirportID())) {
+        if (!visited[ap]) {
+            fillOrder(ap, visited, stack);
+        }
+    }
+    stack.push(i);
+}
+
+Graph Graph::transpose() {
+    Graph g = Graph();
+    for (size_t i = 0; i < airports_.size(); i++) {
+        for (auto j : adjacent(airports_[i].getAirportID())) {
+            Airport dest = airports_[i];
+            Airport from = vertices[j];
+            double distance = from.calculate_distance(from, dest);
+            pair<int, double> to_insert(airports_[i].getAirportID(), distance);
+            g.related_airports[j].insert(to_insert);
+        }
+        // for (auto it = related_airports[airports_[i].getAirportID()].begin(); it != related_airports[airports_[i].getAirportID()].end(); ++it) {
+        //     int apid = (*it).second;
+        //     Airport dest = vertices[apid];
+        //     g.related_airports[(*it).first].insert(pair<int, double>(airports_[i], calculate_distance(airports_[i], dest)));
+        // }
+    }
+    return g;
+}
