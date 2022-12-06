@@ -210,10 +210,73 @@ vector<string> Graph::traverseByDest(int sourceAP, int destAP) {
 Dijkstras: find shortest path (recommended travel paths)
 ************************************************/
 
+/**
+ * Helper function to get the distance from the source airport to its adjacent airport
+ * 
+ * @param sourceAP The source airport
+ * @param adjAP The adjacent airport whose distance from the source airport we want to know 
+ * @return Distance from the source airport to the adjacent airport
+ */
+int Graph::getAdjDistance(int sourceAP, int adjAP) {
+    set s = related_airports.at(sourceAP);
+    for (auto i : s) {
+        if (i.first == adjAP) {
+            return i.second;
+        }
+    }
+    // should never get here
+    return -1;
+}
+
 // input: source airport and destination airport
 // output: a vector to represent the shortest path
 vector<int> Graph::dijkstras(int source_airport_id, int destination_airport_id) {
-    return vector<int>(14110, 0);
+    // initialize all nodes as unvisited
+    vector<bool> visited(14110, false);
+    // initialize all nodes distance to the maxium
+    vector<int> distance(14110, INT_MAX);
+    // previous vector stores the shortest path
+    // initialize all nodes' previous node to [source airport] ?
+    vector<int> previous(14110, source_airport_id);
+
+    // set source airport's distance to 0 and its previous node to itself
+    distance[source_airport_id] = 0;
+    previous[source_airport_id] = source_airport_id;
+
+    // find the shortest path
+    for (int i = 0; i < 14110; i++) {
+        // find the node not visited and closest to the source
+        int next;
+        int min_dist = INT_MAX;
+        for (int j = 0; j < 14110; j++) {
+            if (!visited[j] && distance[j] < min_dist) {
+                min_dist = distance[j];
+                next = j;
+            }
+        }
+        
+        visited[j] = true;
+        // update distance and shortest path
+        for (int j : adjacent(next)) {
+            if (!visited[j]) {
+                int new_dist = getAdjDistance(next, j) + distance[next];
+                if (new_dist < distance[j]) {
+                    distance[j] = new_dist;
+                    previous[j] = next;
+                }
+            }
+        }
+    }
+
+    // return the shortest path from source airport to destination
+    vector<int> shortest_path;
+    int current = destination_airport_id;
+    while (previous[current] != source_airport_id) {
+        shortest_path.push_back(current);
+        current = previous[current];
+    }
+    reverse(shortest_path.begin(), shortest_path.end());
+    return shortest_path;
 }
 
 vector<int> Graph::dijkstras(string source_airport_id, string destination_airport_id) {

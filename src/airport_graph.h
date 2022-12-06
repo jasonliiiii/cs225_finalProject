@@ -70,6 +70,15 @@ class Graph {
 
     vector<int> dijkstras(string source_airport_id, string destination_airport_id);
 
+    /**
+      * Helper function to get the distance from the source airport to its adjacent airport
+      * 
+      * @param sourceAP The source airport
+      * @param adjAP The adjacent airport whose distance from the source airport we want to know 
+      * @return Distance from the source airport to the adjacent airport
+      */
+    int getAdjDistance(int sourceAP, int adjAP);
+
     /************************************************
     Kosaraju: strongest connect component (recommended travel cities)
     ************************************************/
