@@ -9,6 +9,8 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <limits.h>
+#include <algorithm>
 
 using namespace std;
 
@@ -211,6 +213,24 @@ vector<string> Graph::traverseByDest(int sourceAP, int destAP) {
 Dijkstras: find shortest path (recommended travel paths)
 ************************************************/
 
+/**
+ * Helper function to get the distance from the source airport to its adjacent airport
+ * 
+ * @param sourceAP The source airport
+ * @param adjAP The adjacent airport whose distance from the source airport we want to know 
+ * @return Distance from the source airport to the adjacent airport
+ */
+int Graph::getAdjDistance(int sourceAP, int adjAP) {
+    set s = related_airports.at(sourceAP);
+    for (auto i : s) {
+        if (i.first == adjAP) {
+            return i.second;
+        }
+    }
+    // should never get here
+    return -1;
+}
+
 // input: source airport and destination airport
 // output: a vector to represent the shortest path
 vector<int> Graph::dijkstras(int source_airport_id, int destination_airport_id) {
@@ -227,8 +247,10 @@ vector<int> Graph::dijkstras(int source_airport_id, int destination_airport_id) 
     previous[source_airport_id] = source_airport_id;
 
     // find the shortest path
+    cout << "line 249" << endl;
     for (int i = 0; i < 14110; i++) {
         // find the node not visited and closest to the source
+        cout << "i = " << i << endl;
         int next;
         int min_dist = INT_MAX;
         for (int j = 0; j < 14110; j++) {
@@ -237,18 +259,27 @@ vector<int> Graph::dijkstras(int source_airport_id, int destination_airport_id) 
                 next = j;
             }
         }
-        
-        visited[j] = true;
+        cout << "line 261" << endl;
+
+        visited[next] = true;
         // update distance and shortest path
-        for (int j : adjacent(next)) {
+        cout << "line 265" << endl;
+        vector<int> adjacents = adjacent(next); // problem "map::at"
+        cout << "line 267" << endl;
+        for (int j : adjacents) {
+            cout << "j = " << j << endl;
             if (!visited[j]) {
+                cout << "line 271" << endl;
                 int new_dist = getAdjDistance(next, j) + distance[next];
+                cout << "line 274" << endl;
                 if (new_dist < distance[j]) {
                     distance[j] = new_dist;
                     previous[j] = next;
                 }
             }
         }
+        cout << "line 280" << endl;
+    
     }
 
     // return the shortest path from source airport to destination
@@ -260,10 +291,6 @@ vector<int> Graph::dijkstras(int source_airport_id, int destination_airport_id) 
     }
     reverse(shortest_path.begin(), shortest_path.end());
     return shortest_path;
-}
-
-vector<int> Graph::dijkstras(string source_airport_id, string destination_airport_id) {
-    return vector<int>(14110, 0);
 }
 
 

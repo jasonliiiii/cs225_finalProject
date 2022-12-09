@@ -64,6 +64,9 @@ class Graph {
     Dijkstras: find shortest path (recommended travel paths)
     ************************************************/
 
+    // Helper function to get the distance from the source airport to its adjacent airport
+    int getAdjDistance(int sourceAP, int adjAP);
+
     // input: source airport and destination airport
     // output: a vector to represent the shortest path
     vector<int> dijkstras(int source_airport_id, int destination_airport_id);
