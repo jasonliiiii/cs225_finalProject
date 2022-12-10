@@ -4,24 +4,70 @@
 #include <map>
 #include <string>
 #include <queue>
-#include <stack>
-#include <list>
 #include <iostream>
 #include <fstream>
 #include <sstream>
-#include <limits.h>
 #include <algorithm>
 
 using namespace std;
 
 Graph::Graph(){}
 
-Graph::Graph(string & airportFile, string & routeFile) {
+Graph::Graph(string airportFile, string routeFile) {
     // DO SOMETHING
     // Create the graph
     setVerticesMap(readFileAP(airportFile));
     setRelationMap(readFileRoute(routeFile));
-    airports_ = readFileAP(airportFile);
+}
+
+Airport Graph::readLineAP(string& line) {
+    string s = "";
+    vector<string> information;
+    Airport to_return = Airport();
+    for (size_t i = 0; i < line.size(); i++) {
+        char c = line[i];
+        bool quotation = false;
+        // no quotation mark occurs
+        if (quotation == false) {
+            // if current char is ",", which means we reach the end of one piece of information
+            // pushback string s and reset s;
+            if (c == ',') {
+                information.push_back(s);
+                s = "";
+            // if current char is the first half of quotation mark,  
+            } else if (c == '"') {
+                quotation = true;
+            // regular char
+            } else {
+                s += c;
+            }
+        // quotation mark occurs
+        } else {
+            // if current char is the second half of quotation mark
+            if (c == '"' && i < line.size() - 1) {
+                // if the next char is still the first half of quotation mark 
+                if (line[i+1] == '"') {
+                    s += '"';
+                    i++;
+                } else {
+                    quotation = false;
+                }
+            } else {
+                s += c;
+            }
+        }
+    }
+    if (information.at(0) == "\\N" || information.at(1) == "\\N" || information.at(2) == "\\N" 
+    || information.at(3) == "\\N" || information.at(6) == "\\N" || information.at(7) == "\\N" || information.size() > 13) {
+        return Airport(-1, "", "", "", -1, -1);
+    }
+    to_return.setAirportID(stoi(information[0], nullptr));
+    to_return.setAirportName(information[1]);
+    to_return.setAirportCity(information[2]);
+    to_return.setAirportCountry(information[3]);
+    to_return.setAirportLatitude(stod(information[6], nullptr));
+    to_return.setAirportLongitude(stod(information[7], nullptr));
+    return to_return;
 }
 
 vector<Airport> Graph::readFileAP(string airportFile) {
@@ -30,16 +76,14 @@ vector<Airport> Graph::readFileAP(string airportFile) {
     file.open(airportFile, ios::in);
     if (file.is_open()) {
         string line;
-
         while (getline(file, line)) {
-            /*
-            if (Airport(line) != nullptr) {
-                all_aps.push_back(Airport(line));
-            }
-            */
-            all_aps.push_back(Airport(line));
+            Airport a = readLineAP(line);
+            if (a.getAirportID() == -1) continue;
+            all_aps.push_back(a);
         }
         file.close();
+    } else {
+        cout << "The file fails to open" << endl;
     }
     return all_aps;
 }
@@ -75,15 +119,15 @@ Route Graph::createRoute(vector<string> route) {
     if (route.empty() == false) {
         int source_id = stoi(route[3], nullptr);
         int dest_id = stoi(route[5], nullptr);
-        // missing part: check source airport and destination aiport are included in the vertex vector or not
-        Airport a;
-        double weight = a.calculate_distance(vertices.at(source_id), vertices.at(dest_id));
-        Route r(source_id, dest_id, weight);
-        return r;
+        if (vertices.find(source_id) != vertices.end() && vertices.find(dest_id) != vertices.end()) {
+            Airport a;
+            double weight = a.calculate_distance(vertices.at(source_id), vertices.at(dest_id));
+            Route r(source_id, dest_id, weight);
+            return r;
+        }
     } 
     return Route();
 }
-
 
 vector<Route> Graph::readFileRoute(string routeFile) {
     vector<Route> all_routes;
@@ -120,8 +164,10 @@ void Graph::setRelationMap(vector<Route> routes) {
 }
 
 void Graph::setVerticesMap(vector<Airport> airports) {
+    airports_ = airports;
     for (Airport airport : airports) {
-        if (vertices.count(airport.getAirportID()) > 0) {
+        //cout << airport.getAirportName() << endl;
+        if (vertices.find(airport.getAirportID()) != vertices.end()) {
             // the airport already exsits in the map
             // in this case we do nothing
             continue;
@@ -148,7 +194,7 @@ string Graph::getAirportNameByID(int id) {
     return vertices[id].getAirportName();
 }
 
-vector<string> Graph::traverseAll(int sourceAP) {
+vector<string> Graph::traverseAll(int sourceAP) { 
     vector<string> ret;
     queue<int> q;
     // 14110: because there is 14110 airports in airport dataset
@@ -205,6 +251,11 @@ vector<string> Graph::traverseByDest(int sourceAP, int destAP) {
             }
         }
     }
+    /*
+    for (string str : ret) {
+        cout << str << endl;
+    }
+    */
     return ret;
 }
 
@@ -213,13 +264,6 @@ vector<string> Graph::traverseByDest(int sourceAP, int destAP) {
 Dijkstras: find shortest path (recommended travel paths)
 ************************************************/
 
-/**
- * Helper function to get the distance from the source airport to its adjacent airport
- * 
- * @param sourceAP The source airport
- * @param adjAP The adjacent airport whose distance from the source airport we want to know 
- * @return Distance from the source airport to the adjacent airport
- */
 int Graph::getAdjDistance(int sourceAP, int adjAP) {
     set s = related_airports.at(sourceAP);
     for (auto i : s) {
@@ -247,10 +291,10 @@ vector<int> Graph::dijkstras(int source_airport_id, int destination_airport_id) 
     previous[source_airport_id] = source_airport_id;
 
     // find the shortest path
-    cout << "line 249" << endl;
+    //cout << "line 249" << endl;
     for (int i = 0; i < 14110; i++) {
         // find the node not visited and closest to the source
-        cout << "i = " << i << endl;
+        //cout << "i = " << i << endl;
         int next;
         int min_dist = INT_MAX;
         for (int j = 0; j < 14110; j++) {
@@ -259,26 +303,26 @@ vector<int> Graph::dijkstras(int source_airport_id, int destination_airport_id) 
                 next = j;
             }
         }
-        cout << "line 261" << endl;
+        //cout << "line 261" << endl;
 
         visited[next] = true;
         // update distance and shortest path
-        cout << "line 265" << endl;
+        //cout << "line 265" << endl;
         vector<int> adjacents = adjacent(next); // problem "map::at"
-        cout << "line 267" << endl;
+        //cout << "line 267" << endl;
         for (int j : adjacents) {
-            cout << "j = " << j << endl;
+            //cout << "j = " << j << endl;
             if (!visited[j]) {
-                cout << "line 271" << endl;
+                //cout << "line 271" << endl;
                 int new_dist = getAdjDistance(next, j) + distance[next];
-                cout << "line 274" << endl;
+                //cout << "line 274" << endl;
                 if (new_dist < distance[j]) {
                     distance[j] = new_dist;
                     previous[j] = next;
                 }
             }
         }
-        cout << "line 280" << endl;
+        //cout << "line 280" << endl;
     
     }
 
@@ -292,6 +336,11 @@ vector<int> Graph::dijkstras(int source_airport_id, int destination_airport_id) 
     reverse(shortest_path.begin(), shortest_path.end());
     return shortest_path;
 }
+
+vector<int> Graph::dijkstras(string source_airport_id, string destination_airport_id) {
+    return vector<int>(14110, 0);
+}
+
 
 
 /************************************************

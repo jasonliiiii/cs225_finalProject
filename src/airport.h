@@ -12,6 +12,7 @@
 #include <sstream>
 #include <math.h>
 
+
 #include "route.h"
 
 using namespace std;
@@ -20,8 +21,16 @@ class Airport {
     public:
     // constructor
     Airport();
-    Airport(string &line);
+    //Airport(string &line);
     Airport(int id, string name, string city, string country, double latitude, double longitude);
+
+    // setters
+    void setAirportID(int id) {id_ = id;}
+    void setAirportName(string name) {name_ = name;}
+    void setAirportCity(string city) {city_ = city;}
+    void setAirportCountry(string country) {country_ = country;}
+    void setAirportLatitude(double latitude) {latitude_ = latitude;}
+    void setAirportLongitude(double longtitude) {longitude_ = longtitude;}
 
     // getters
     int getAirportID() {return id_;}

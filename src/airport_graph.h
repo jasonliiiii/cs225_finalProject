@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <vector>
@@ -12,6 +13,8 @@
 #include <iostream>
 #include <vector>
 #include <sstream>
+#include <limits.h>
+#include <stdexcept>
 
 #include "airport.h"
 #include "route.h"
@@ -22,7 +25,7 @@ class Graph {
     public:
     Graph();
     // in order to obtain a list of airports and routes
-    Graph(string & airportFile, string & routeFile);
+    Graph(string airportFile, string routeFile);
 
     /************************************************
     Suggestion: Maybe we could create two vectors, one containing all the airports and one containing all the routes
@@ -35,6 +38,8 @@ class Graph {
 
     // read airports.dat and get a vector of airports
     vector<Airport> readFileAP(string airportFile);
+
+    Airport readLineAP(string& line);
 
     // helper function to insert edges (routes)
     vector<string> readLineRoute(string & line);
@@ -63,8 +68,6 @@ class Graph {
     /************************************************
     Dijkstras: find shortest path (recommended travel paths)
     ************************************************/
-
-    // Helper function to get the distance from the source airport to its adjacent airport
     int getAdjDistance(int sourceAP, int adjAP);
 
     // input: source airport and destination airport
@@ -88,6 +91,10 @@ class Graph {
     void fillOrder(int i,  vector<bool> visited, stack<int> &stack);
 
     Graph transpose();
+
+    // Getters
+    map<int, Airport> getVertices() { return vertices; }
+    map<int, set<pair<int,double>>> getRelatedAirports() { return related_airports; }
 
     private:
 
