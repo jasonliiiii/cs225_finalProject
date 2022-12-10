@@ -5,9 +5,15 @@
 
 using namespace std;
 
+Airport a1 = Airport(507, "London Heathrow Airport", "London", "United Kingdom", 51.4706, -0.461941);
+Airport a2 = Airport(26,"Kugaaruk Airport","Pelly Bay","Canada",68.534401,-89.808098);
+Airport a3 = Airport(3127,"Pokhara Airport","Pokhara","Nepal",28.200899124145508,83.98210144042969);
+Airport a4 = Airport(8810,"Hamburg Hbf","Hamburg","Germany",53.552776,10.006683);
+
 TEST_CASE("Check readLineAirport1", "[weight=1][timeout=30000]") {
   string line = "507,\"London Heathrow Airport\",\"London\",\"United Kingdom\",\"LHR\",\"EGLL\",51.4706,-0.461941,83,0,\"E\",\"Europe/London\",\"airport\",\"OurAirports\"";
-  Airport airport = Airport(line);
+  Graph g = Graph();
+  Airport airport = g.readLineAP(line);
   REQUIRE(airport.getAirportID() == 507);
   REQUIRE(airport.getAirportName() == "London Heathrow Airport");
   REQUIRE(airport.getAirportCity() == "London");
@@ -18,13 +24,26 @@ TEST_CASE("Check readLineAirport1", "[weight=1][timeout=30000]") {
 
 TEST_CASE("Check readLineAirport2", "[weight=1][timeout=30000]") {
   string line = "104,\"Pitt Meadows Airport\",\"Pitt Meadows\",\"Canada\",\\N,\"CYPK\",49.21609878540039,-122.70999908447266,11,-8,\"A\",\"America/Vancouver\",\"airport\",\"OurAirports\"";
-  Airport airport = Airport(line);
+  Graph g = Graph();
+  Airport airport = g.readLineAP(line);
   REQUIRE(airport.getAirportID() == 104);
   REQUIRE(airport.getAirportName() == "Pitt Meadows Airport");
   REQUIRE(airport.getAirportCity() == "Pitt Meadows");
   REQUIRE(airport.getAirportCountry() == "Canada");
   REQUIRE(airport.getAirportLatitude() == 49.21609878540039);
   REQUIRE(airport.getAirportLongitude() == -122.70999908447266);
+}
+
+TEST_CASE("Test readLineAirport3", "[weight=1][timeout=30000]") {
+  string line = "641,\"Harstad/Narvik Airport, Evenes\",\"Harstad/Narvik\",\"Norway\",\"EVE\",\"ENEV\",68.491302490234,16.678100585938,84,1,\"E\",\"Europe/Oslo\",\"airport\",\"OurAirports\"";
+  Graph g = Graph();
+  Airport airport = g.readLineAP(line);
+  REQUIRE(airport.getAirportID() == -1);
+  REQUIRE(airport.getAirportName() == "");
+  REQUIRE(airport.getAirportCity() == "");
+  REQUIRE(airport.getAirportCountry() == "");
+  REQUIRE(airport.getAirportLatitude() == -1);
+  REQUIRE(airport.getAirportLongitude() == -1);
 }
 
 TEST_CASE("Check readLineRoute1", "[weight=1][timeout=30000]") {
@@ -53,10 +72,6 @@ TEST_CASE("Calculate Distance", "[weight=1][timeout=30000") {
 }
 
 TEST_CASE("Graph Construction1", "[weight=1][timeout=30000]") {
-  Airport a1 = Airport(507, "London Heathrow Airport", "London", "United Kingdom", 51.4706, -0.461941);
-  Airport a2 = Airport(26,"Kugaaruk Airport","Pelly Bay","Canada",68.534401,-89.808098);
-  Airport a3 = Airport(3127,"Pokhara Airport","Pokhara","Nepal",28.200899124145508,83.98210144042969);
-  Airport a4 = Airport(8810,"Hamburg Hbf","Hamburg","Germany",53.552776,10.006683);
   vector<Airport> airports = {a1, a2, a3, a4};
   Graph g = Graph();
   g.setVerticesMap(airports);
@@ -80,18 +95,37 @@ TEST_CASE("Graph Construction2", "[weight=1][timeout=30000]") {
   REQUIRE(adjacents.at(2) == 4);
 }
 
-TEST_CASE("BFS", "[weight=1][timeout=30000]") {
-  Airport a1 = Airport(507, "London Heathrow Airport", "London", "United Kingdom", 51.4706, -0.461941);
-  Airport a2 = Airport(26,"Kugaaruk Airport","Pelly Bay","Canada",68.534401,-89.808098);
-  Airport a3 = Airport(3127,"Pokhara Airport","Pokhara","Nepal",28.200899124145508,83.98210144042969);
-  Airport a4 = Airport(8810,"Hamburg Hbf","Hamburg","Germany",53.552776,10.006683);
+TEST_CASE("BFS_basic_traversal", "[weight=1][timeout=30000]") {
   vector<Airport> airports = {a1, a2, a3, a4};
   Graph g = Graph();
   g.setVerticesMap(airports);
   Route r1 = Route(507, 26, 1000);
   Route r2 = Route(26, 3127, 1300);
   Route r3 = Route(507, 8810, 3200);
-  vector<Route> routes = {r1, r2, r3};
+  Route r4 = Route(26, 507, 1000);
+  Route r5 = Route(3127, 26, 1300);
+  Route r6 = Route(8810, 507, 3200);
+  vector<Route> routes = {r1, r2, r3, r4, r5, r6};
+  g.setRelationMap(routes);
+  vector<string> path = g.traverseAll(507);
+  REQUIRE(path.size() == 4);
+  REQUIRE(path.at(0) == "London Heathrow Airport");
+  REQUIRE(path.at(1) == "Kugaaruk Airport");
+  REQUIRE(path.at(2) == "Hamburg Hbf");
+  REQUIRE(path.at(3) == "Pokhara Airport");
+}
+
+TEST_CASE("BFS_find_shortest_path", "[weight=1][timeout=30000]") {
+  vector<Airport> airports = {a1, a2, a3, a4};
+  Graph g = Graph();
+  g.setVerticesMap(airports);
+  Route r1 = Route(507, 26, 1000);
+  Route r2 = Route(26, 3127, 1300);
+  Route r3 = Route(507, 8810, 3200);
+  Route r4 = Route(26, 507, 1000);
+  Route r5 = Route(3127, 26, 1300);
+  Route r6 = Route(8810, 507, 3200);
+  vector<Route> routes = {r1, r2, r3, r4, r5, r6};
   g.setRelationMap(routes);
   vector<string> path = g.traverseByDest(507, 3127);
   REQUIRE(path.size() == 3);
@@ -101,17 +135,17 @@ TEST_CASE("BFS", "[weight=1][timeout=30000]") {
 }
 
 TEST_CASE("Find shortest path by distance", "[weight=1][timeout=30000]") {
-  Airport a1 = Airport(507, "London Heathrow Airport", "London", "United Kingdom", 51.4706, -0.461941);
-  Airport a2 = Airport(26,"Kugaaruk Airport","Pelly Bay","Canada",68.534401,-89.808098);
-  Airport a3 = Airport(3127,"Pokhara Airport","Pokhara","Nepal",28.200899124145508,83.98210144042969);
-  Airport a4 = Airport(8810,"Hamburg Hbf","Hamburg","Germany",53.552776,10.006683);
   vector<Airport> airports = {a1, a2, a3, a4};
   Graph g = Graph();
   Route r1 = Route(507, 26, 1000); // a1 -> a2 by distance 1000
   Route r2 = Route(26, 3127, 100); // a2 -> a3 by distance 100
   Route r3 = Route(507, 8810, 2000); // a1 -> a4 by distance 2000
   Route r4 = Route(8810, 3127, 1000); // a3 -> a4 by distance 1000
-  vector<Route> routes = {r1, r2, r3, r4};
+  Route r5 = Route(26, 507, 1000); 
+  Route r6 = Route(3127, 26, 100); 
+  Route r7 = Route(8810, 507, 2000); 
+  Route r8 = Route(3127, 8810, 1000); 
+  vector<Route> routes = {r1, r2, r3, r4, r5, r6, r7, r8};
   g.setRelationMap(routes);
   vector<int> path = g.dijkstras(507, 3127);
   REQUIRE(path.size() == 3);
