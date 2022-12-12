@@ -4,9 +4,12 @@
 #include <map>
 #include <string>
 #include <queue>
+#include <stack>
+#include <list>
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <limits.h>
 #include <algorithm>
 
 using namespace std;
@@ -18,6 +21,7 @@ Graph::Graph(string airportFile, string routeFile) {
     // Create the graph
     setVerticesMap(readFileAP(airportFile));
     setRelationMap(readFileRoute(routeFile));
+    airports_ = readFileAP(airportFile);
 }
 
 Airport Graph::readLineAP(string& line) {
@@ -197,7 +201,6 @@ string Graph::getAirportNameByID(int id) {
 vector<string> Graph::traverseAll(int sourceAP) { 
     vector<string> ret;
     queue<int> q;
-    // 14110: because there is 14110 airports in airport dataset
     vector<bool> labels(14110, false);
 
     q.push(sourceAP);
@@ -209,6 +212,7 @@ vector<string> Graph::traverseAll(int sourceAP) {
     while (!(q.empty())) {
         currentAP = q.front();
         q.pop();
+
         ret.push_back(getAirportNameByID(currentAP));
 
         for (auto ap : adjacent(currentAP)) {
@@ -224,38 +228,56 @@ vector<string> Graph::traverseAll(int sourceAP) {
 vector<string> Graph::traverseByDest(int sourceAP, int destAP) {
     vector<string> ret;
     queue<int> q;
-    // 14110: because there is 14110 airports in airport dataset
-    vector<bool> labels(14110, false);
+    vector<bool> labels(14110+1, false);
+    vector<int> pred(14110+1, -1);
+    vector<int> distance(14110+1, INT_MAX);
 
     q.push(sourceAP);
     // labels[sourceAP] = true; // label sourceAP (starting point) as visited
 
     int currentAP = sourceAP; // copy of the input id
     labels[currentAP] = true;
+    pred[currentAP] = -1;
+    distance.push_back(currentAP);
 
     while (!(q.empty())) {
         currentAP = q.front();
         q.pop();
+        cout << "The currentAP is: " << currentAP << endl;
 
-        if (currentAP == destAP) { // check if we reach the destination airport
-            ret.push_back(getAirportNameByID(currentAP));
+        // check if we find the destination
+        if (currentAP == destAP) {
+            // cout << "a" << endl;
             break;
         }
 
-        ret.push_back(getAirportNameByID(currentAP));
-
-        for (auto ap : adjacent(currentAP)) {
-            if (labels[ap] == false) { // vertex is unexplored
-                q.push(ap);
-                labels[ap] = true;
+        for (size_t i = 0; i < adjacent(currentAP).size(); i++) {
+            if (labels[adjacent(currentAP)[i]] == false) { // vertex is unexplored
+                q.push(adjacent(currentAP)[i]);
+                labels[adjacent(currentAP)[i]] = true;
+                distance[adjacent(currentAP)[i]] = distance[currentAP] + 1;
+                pred[adjacent(currentAP)[i]] = currentAP;
             }
         }
     }
-    /*
+    // no path exsits
+    if (currentAP != destAP) {
+        return vector<string>();
+    } 
+
+    ret.push_back(getAirportNameByID(destAP));
+    while (pred[currentAP] != -1) {
+        cout << pred[currentAP] << endl;
+        ret.push_back(getAirportNameByID(pred[currentAP]));
+        currentAP = pred[currentAP];
+    }
+    cout << ret.size() << endl;
+
+    reverse(ret.begin(), ret.end());
+
     for (string str : ret) {
         cout << str << endl;
     }
-    */
     return ret;
 }
 
