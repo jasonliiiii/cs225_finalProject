@@ -26,7 +26,7 @@ cd build
 ```
 make
 ```
-#### 2. We create test cases as following: Check readLineAirport, Check readLineRoute, Calculate Distance, Graph Construction, BFS, Find shortest path by distance, Find strongly connected component. 
+#### 2. We create test cases as following: Check readLineAirport, Check readLineRoute, Calculate Distance, Graph Construction, BFS (both overall and partial), Find shortest path by distance, Find strongly connected component. 
 #### To run the test cases, use
 ```
 make test
@@ -35,4 +35,10 @@ make test
 #### 3. To end the program anytime, use 
 ```
 Ctrl+C
+```
+#### 4. We have also added a main page that could interact with our programs. More specifically, users will select the option (whether it is BFS, Dijkstra, or Kosaraju) and input the starting airport and the destination airport themselves.
+#### To do this, use the following and follow the directions
+```
+make
+./main
 ```
