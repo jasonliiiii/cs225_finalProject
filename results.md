@@ -13,7 +13,7 @@ Correctness and tests: The algorithm was completed and tested on self-defined te
 ### Dijkstra: 
 Output: The input of the Dijkstra function is the id of the source airport and that of the destination airport. We iterate through all adjacent airports and updated the distance and shortest paht. We also created a vector to store previous airports visited and reversed it to output the shortest path from source airport to destination in vector<int>. The output will be a path of airports id.
 
-Correctness and tests: Let's see 
+Correctness and tests: Our function past the test case which tests if we can find the correct shortest path from airport 507 to airport 3127. However, it failed to work with the large dataset that should allow users to search for the shortest path from their source airport to their destination, because the time complexity does not permit it. This is also the biggest challenge we faced when implementing and testing this function. We tried to use different approaches to reduce its time complexity but we did not succeed.
 
 ### BFS:
 Output: We constructed two traversal functions. One traversed the whole graph and another one traversed based on source airport and the id of the destination airport. The outputs for both of them are vectors. For the first BFS, we constructed a queue and took a normal BFS approach. For the second BFS, we also constructed a queue to traverse our data. We have also constructed a vector to keep record of previous vertices as predecessors. Once the destination airport was found, we broke the loop. At the end, we use the predecessors obtained before to get the overall path.
@@ -23,8 +23,8 @@ Correctness and tests: The algorithm was completed and tested on self-defined te
 ### Kosaraju:
 Output: The input for our Kosaraju algorithm is the id of the source airport. Overall, we did DFS two times and transpose overall graph. First, we fill order of vertices according to finishing times in increasing order and we reversed the direction of each edge in the whole graph. Then we did DFS again to get the strongest connected components.
   
-Correctness and tests: Let's see
+Correctness and tests: The function was completed but it failed the test cases. We tried our best and worked on it but we still couldn't figure it out. We will continue working on it to fix the algorithm.
 
 
 ## Answer to leading questions
-
+Our leading question is to find the shortest path between airports. We have completed the BFS Traversal and Dijkstra so we was able to find the shortest path. By working on this project, we have a better understanding on BFS traversal and Dijkstra algorithm. We also learn a lot about kosaruju algorithm. We talked about our individual thoughts after finishing the project and found that everyone enjoyed writing the pseudo code and made it to real code.
