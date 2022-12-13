@@ -16,12 +16,12 @@ Output: The input of the Dijkstra function is the id of the source airport and t
 Correctness and tests: Let's see 
 
 ### BFS:
-Output: The input for our BFS algorithm is the id of the aource airport an the id of the destination airport. We constructed a queue and took a normal BFS approach to traverse our data. We have also constructed a vector to keep record of previous vertices. Once the destination airport was found, we will trace back and obtain the path.
+Output: We constructed two traversal functions. One traversed the whole graph and another one traversed based on source airport and the id of the destination airport. The outputs for both of them are vectors. For the first BFS, we constructed a queue and took a normal BFS approach. For the second BFS, we also constructed a queue to traverse our data. We have also constructed a vector to keep record of previous vertices as predecessors. Once the destination airport was found, we broke the loop. At the end, we use the predecessors obtained before to get the overall path.
   
 Correctness and tests: The algorithm was completed and tested on self-defined test cases as well as the given dataset. For local tests, we tested for both traversing through the whole graph and obtaining the shortest path, which is based on the least number of airports traveled. The algorithm also works on the large dataset, tested in main.
 
 ### Kosaraju:
-Output:
+Output: The input for our Kosaraju algorithm is the id of the source airport. Overall, we did DFS two times and transpose overall graph. First, we fill order of vertices according to finishing times in increasing order and we reversed the direction of each edge in the whole graph. Then we did DFS again to get the strongest connected components.
   
 Correctness and tests: Let's see
 
