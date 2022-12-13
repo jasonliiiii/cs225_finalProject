@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include <vector>
@@ -97,7 +98,6 @@ class Graph {
 
     // map each id with its airport object
     map<int, Airport> vertices;
-
     // a map that records the adjacent airport with routes and the distance between them
     // key: main airport, value: pairs(key: related airport, value: distance)
     map<int, set<pair<int,double>>> related_airports;

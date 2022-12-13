@@ -4,12 +4,9 @@
 #include <map>
 #include <string>
 #include <queue>
-#include <stack>
-#include <list>
 #include <iostream>
 #include <fstream>
 #include <sstream>
-#include <limits.h>
 #include <algorithm>
 
 using namespace std;
@@ -21,7 +18,6 @@ Graph::Graph(string airportFile, string routeFile) {
     // Create the graph
     setVerticesMap(readFileAP(airportFile));
     setRelationMap(readFileRoute(routeFile));
-    airports_ = readFileAP(airportFile);
 }
 
 Airport Graph::readLineAP(string& line) {
@@ -201,6 +197,7 @@ string Graph::getAirportNameByID(int id) {
 vector<string> Graph::traverseAll(int sourceAP) { 
     vector<string> ret;
     queue<int> q;
+    // 14110: because there is 14110 airports in airport dataset
     vector<bool> labels(14110, false);
 
     q.push(sourceAP);
@@ -212,7 +209,6 @@ vector<string> Graph::traverseAll(int sourceAP) {
     while (!(q.empty())) {
         currentAP = q.front();
         q.pop();
-
         ret.push_back(getAirportNameByID(currentAP));
 
         for (auto ap : adjacent(currentAP)) {
@@ -243,7 +239,6 @@ vector<string> Graph::traverseByDest(int sourceAP, int destAP) {
     while (!(q.empty())) {
         currentAP = q.front();
         q.pop();
-        cout << "The currentAP is: " << currentAP << endl;
 
         // check if we find the destination
         if (currentAP == destAP) {
@@ -267,17 +262,10 @@ vector<string> Graph::traverseByDest(int sourceAP, int destAP) {
 
     ret.push_back(getAirportNameByID(destAP));
     while (pred[currentAP] != -1) {
-        cout << pred[currentAP] << endl;
         ret.push_back(getAirportNameByID(pred[currentAP]));
         currentAP = pred[currentAP];
     }
-    cout << ret.size() << endl;
-
     reverse(ret.begin(), ret.end());
-
-    for (string str : ret) {
-        cout << str << endl;
-    }
     return ret;
 }
 
@@ -364,7 +352,6 @@ vector<int> Graph::dijkstras(int source_airport_id, int destination_airport_id) 
 }
 
 
-
 /************************************************
 Kosaraju: strongest connect component (recommended travel cities)
 ************************************************/
@@ -375,14 +362,12 @@ vector<int> Graph::kosaraju(int source_airport_id) {
     stack<int> stack;
     // mark all the vertices as not visited (for first DFS)
     vector<bool> visited (14110, false);
-    
     // fill vertices in stack according to finishing times
     for (size_t i = 0; i < airports_.size(); i++) {
         if (visited[i] == false) {
             fillOrder(i, visited, stack);
         }
     }
-
     // create a reversed graph
     Graph g = transpose();
 
@@ -393,6 +378,7 @@ vector<int> Graph::kosaraju(int source_airport_id) {
 
     vector<int> ret;
     // process all vertices
+    if (stack.empty()) cout << "The stack is empty" << endl;
     while (!stack.empty()) {
         int v = stack.top();
         stack.pop();
