@@ -36,9 +36,11 @@ make test
 ```
 Ctrl+C
 ```
-#### 4. We have also added a main page that could interact with our programs. More specifically, users will select the option (whether it is BFS, Dijkstra, or Kosaraju) and input the starting airport and the destination airport themselves.
+#### 4. We have also added a main page that could interact with our programs. More specifically, users will select the option and there are three options which links to three different algorithms (whether it is BFS, Dijkstra, or Kosaraju) and input the starting airport and the destination airport themselves.
 #### To do this, use the following and follow the directions
 ```
 make
 ./main
+1 / 2 / 3
+input
 ```
