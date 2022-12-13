@@ -137,6 +137,7 @@ TEST_CASE("BFS_find_shortest_path", "[weight=1][timeout=30000]") {
 TEST_CASE("Find shortest path by distance", "[weight=1][timeout=30000]") {
   vector<Airport> airports = {a1, a2, a3, a4};
   Graph g = Graph();
+  g.setVerticesMap(airports);
   Route r1 = Route(507, 26, 1000); // a1 -> a2 by distance 1000
   Route r2 = Route(26, 3127, 100); // a2 -> a3 by distance 100
   Route r3 = Route(507, 8810, 2000); // a1 -> a4 by distance 2000
@@ -161,6 +162,7 @@ TEST_CASE("Find strongly connected component", "[weight=1][timeout=30000]") {
   Airport a4 = Airport(8810,"Hamburg Hbf","Hamburg","Germany",53.552776,10.006683);
   vector<Airport> airports = {a1, a2, a3, a4};
   Graph g = Graph();
+  g.setVerticesMap(airports);
   Route r1 = Route(507, 26, 1000); // a1 -> a2
   Route r2 = Route(26, 3127, 100); // a2 -> a3 
   Route r3 = Route(3127, 507, 2000); // a3 -> a1 --> stongly connected!
