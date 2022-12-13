@@ -351,16 +351,16 @@ vector<int> Graph::dijkstras(int source_airport_id, int destination_airport_id) 
     // return the shortest path from source airport to destination
     vector<int> shortest_path;
     int current = destination_airport_id;
-    while (previous[current] != source_airport_id) {
+    while (current != source_airport_id) {
         shortest_path.push_back(current);
         current = previous[current];
     }
+    shortest_path.push_back(current);
     reverse(shortest_path.begin(), shortest_path.end());
+    /*for (int airport : shortest_path) {
+        cout << airport << " / ";
+    }*/
     return shortest_path;
-}
-
-vector<int> Graph::dijkstras(string source_airport_id, string destination_airport_id) {
-    return vector<int>(14110, 0);
 }
 
 

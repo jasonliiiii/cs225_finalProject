@@ -73,8 +73,6 @@ class Graph {
     // output: a vector to represent the shortest path
     vector<int> dijkstras(int source_airport_id, int destination_airport_id);
 
-    vector<int> dijkstras(string source_airport_id, string destination_airport_id);
-
     /************************************************
     Kosaraju: strongest connect component (recommended travel cities)
     ************************************************/
