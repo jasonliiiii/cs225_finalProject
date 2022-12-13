@@ -16,9 +16,9 @@ Output: The input of the Dijkstra function is the id of the source airport and t
 Correctness and tests: Let's see 
 
 ### BFS:
-Output: 
+Output: The input for our BFS algorithm is the id of the aource airport an the id of the destination airport. We constructed a queue and took a normal BFS approach to traverse our data. We have also constructed a vector to keep record of previous vertices. Once the destination airport was found, we will trace back and obtain the path.
   
-Correctness and tests:
+Correctness and tests: The algorithm was completed and tested on self-defined test cases as well as the given dataset. For local tests, we tested for both traversing through the whole graph and obtaining the shortest path, which is based on the least number of airports traveled. The algorithm also works on the large dataset, tested in main.
 
 ### Kosaraju:
 Output:
